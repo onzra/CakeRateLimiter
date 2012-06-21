@@ -198,6 +198,7 @@ class RateLimiterComponent extends Component {
 	}
 
 	/**
+	 * Check if a user is over their total request limit
 	 * @param string $user User identifier
 	 * @return bool True if user is over total requests limit
 	 */
