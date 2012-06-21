@@ -128,6 +128,7 @@ class RateLimiterComponent extends Component {
 	}
 
 	/**
+	 * Check if the current request is allowed to skip rate limiting
 	 * @return bool True if current request should not be rate limited
 	 */
 	protected function isAllowed() {
