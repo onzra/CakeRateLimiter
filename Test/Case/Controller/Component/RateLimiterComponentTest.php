@@ -47,8 +47,6 @@ class RateLimiterComponentTest extends CakeTestCase {
 		parent::tearDown();
 
 		unset($this->Controller, $this->Component);
-
-		Cache::clear(false, 'rate_limiter_test');
 	}
 
 	/**
