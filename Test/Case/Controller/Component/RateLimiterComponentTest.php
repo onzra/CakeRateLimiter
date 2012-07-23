@@ -22,10 +22,12 @@ App::uses('RateLimiterComponent', 'RateLimiter.Controller/Component');
  */
 class RateLimiterComponentTest extends CakeTestCase {
 
+	protected $getUserResult = '127.0.0.1';
+
 	public function setUp() {
 		parent::setUp();
-		$this->_server = $_SERVER;
-		$this->_env = $_ENV;
+
+		$this->getUserResult = '127.0.0.1';
 
 		//Configuration
 		Configure::write('RateLimiter.totalLimit', array(5, 'day'));
@@ -43,8 +45,6 @@ class RateLimiterComponentTest extends CakeTestCase {
 
 	public function tearDown() {
 		parent::tearDown();
-		$_SERVER = $this->_server;
-		$_ENV = $this->_env;
 
 		unset($this->Controller, $this->Component);
 
@@ -212,7 +212,7 @@ class RateLimiterComponentTest extends CakeTestCase {
 		$this->fakeRequest('rate_limiter_test', 'method_a');
 		$this->fakeRequest('rate_limiter_test', 'method_a');
 		//By default RateLimiter uses IP address as user identifier
-		$_SERVER['REMOTE_ADDR'] = '127.0.0.2';
+		$this->getUserResult = '127.0.0.2';
 		$this->fakeRequest('rate_limiter_test', 'method_a');
 
 		//Test total
@@ -226,8 +226,7 @@ class RateLimiterComponentTest extends CakeTestCase {
 	 * Tests that if the get user callback does not return a user identifier, an exception is raised
 	 */
 	public function testGetUserFailureRaisesException() {
-		$callback = function($request) { return false; };
-		$this->Controller->RateLimiter->setGetUserCallback($callback);
+		$this->getUserResult = false;
 		$this->expectException('RateLimitUserException');
 		$this->fakeRequest('rate_limiter_test', 'method_a');
 	}
@@ -338,7 +337,18 @@ class RateLimiterComponentTest extends CakeTestCase {
 		if($allow) {
 			$this->Controller->RateLimiter->allow($allow);
 		}
+
+		//Mock get user callback
+		$this->Controller->RateLimiter->setGetUserCallback(array($this, 'getUserCallback'));
+
 		$this->Controller->RateLimiter->startup($this->Controller);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUserCallback() {
+		return $this->getUserResult;
 	}
 }
 
