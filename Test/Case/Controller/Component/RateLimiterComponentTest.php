@@ -284,22 +284,6 @@ class RateLimiterComponentTest extends CakeTestCase {
 	}
 
 	/**
-	 * Tests that the default storage engine (CakePHP file cache) works
-	 */
-	public function testDefaultStorage() {
-		$total_key = 'ratelimit_127.0.0.1_' . date('ymd');
-		$method_key = 'ratelimit_127.0.0.1_' . date('ymd') . '_rate_limiter_test.method_a';
-
-		$this->fakeRequest('rate_limiter_test', 'method_a', false, false);
-		$this->assertEqual(Cache::read($total_key, 'rate_limiter_test'), 1);
-		$this->assertEqual(Cache::read($method_key, 'rate_limiter_test'), 1);
-
-		$this->fakeRequest('rate_limiter_test', 'method_a', false, false);
-		$this->assertEqual(Cache::read($total_key, 'rate_limiter_test'), 2);
-		$this->assertEqual(Cache::read($method_key, 'rate_limiter_test'), 2);
-	}
-
-	/**
 	 * Helper method to bootstrap a CakePHP request
 	 */
 	public function initRequest() {
