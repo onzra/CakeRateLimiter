@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="CakeRateLimiter" default="build">
+
+	<target name="build" depends="clean,prepare,phpunit">
+		<echo msg="Building CakeRateLimiter!" />
+	</target>
+
+	<target name="phpunit">
+		<exec executable="/var/lib/cakephp/app/Console/cake">
+			<arg value="test" />
+			<arg value="RateLimiter" />
+			<arg value="All" />
+			<arg value="--log-junit" />
+			<arg value="${project.basedir}/build/logs/junit.xml" />
+			<arg value="--coverage-html" />
+			<arg value="${project.basedir}/build/coverage/" />
+			<arg value="--coverage-clover" />
+			<arg value="${project.basedir}/build/logs/clover.xml" />
+		</exec>
+	</target>
+
+	<target name="clean">
+		<delete dir="${project.basedir}/build/logs" />
+		<delete dir="${project.basedir}/build/coverage" />
+		<delete file="/var/lib/cakephp/app/Plugin/RateLimiter" />
+	</target>
+
+	<target name="prepare">
+		<mkdir dir="${project.basedir}/build/logs" />
+		<mkdir dir="${project.basedir}/build/coverage" />
+		<symlink target="${project.basedir}" link="/var/lib/cakephp/app/Plugin/RateLimiter" />
+	</target>
+
+</project>
