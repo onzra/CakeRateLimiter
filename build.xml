@@ -7,7 +7,7 @@
 	</target>
 
 	<target name="phpunit">
-		<echo msg="/var/lib/cakephp/app/Console/cake test RateLimiter All --stderr --log-junit ${project.basedir}/build/logs/junit.xml" />
+		<echo msg="/var/lib/cakephp/app/Console/cake test RateLimiter All --stderr --log-junit ${project.basedir}/build/logs/junit.xml --coverage-clover ${project.basedir}/build/logs/clover.xml --coverage-html ${project.basedir}/build/coverage" />
 		<exec executable="/var/lib/cakephp/app/Console/cake">
 			<arg value="test" />
 			<arg value="RateLimiter" />
@@ -15,6 +15,10 @@
 			<arg value="--stderr" />
 			<arg value="--log-junit" />
 			<arg value="${project.basedir}/build/logs/junit.xml" />
+			<arg value="--coverage-clover" />
+			<arg value="${project.basedir}/build/logs/clover.xml" />
+			<!--<arg value="-coverage-html" />-->
+			<!--<arg value="${project.basedir}/build/coverage" />-->
 		</exec>
 	</target>
 
