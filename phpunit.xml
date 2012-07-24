@@ -1,0 +1,7 @@
+<phpunit>
+	<filter>
+		<blacklist>
+			<directory suffix=".php">/private/var/lib/cakephp/lib/Cake</directory>
+		</blacklist>
+	</filter>
+</phpunit>
