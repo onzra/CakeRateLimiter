@@ -2,6 +2,7 @@
 	<filter>
 		<blacklist>
 			<directory suffix=".php">/var/lib/cakephp/lib/Cake</directory>
+			<directory suffix=".php">Test</directory>
 		</blacklist>
 	</filter>
 </phpunit>
