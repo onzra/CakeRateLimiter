@@ -15,6 +15,10 @@
 
 App::uses('RateLimit', 'RateLimiter.Lib');
 App::uses('RateLimitCakeCacheAdapter', 'RateLimiter.Lib');
+App::uses('TotalRateLimitExceededException', 'RateLimiter.Lib/Error/Exception');
+App::uses('MethodRateLimitExceededException', 'RateLimiter.Lib/Error/Exception');
+App::uses('RateLimitStorageException', 'RateLimiter.Lib/Error/Exception');
+App::uses('RateLimitUserException', 'RateLimiter.Lib/Error/Exception');
 
 /**
  * RateLimiterComponent
@@ -36,20 +40,28 @@ class RateLimiterComponent extends Component {
 
 	/* @var RateLimit Total request limit */
 	protected $totalLimit;
+
 	/* @var array Rate limits per method */
 	protected $methodLimits;
+
 	/* @var bool True if rate limiter was disabled in config */
 	protected $disable = false;
+
 	/* @var object Object for storing requests */
 	protected $storageEngine;
+
 	/* @var string Name for default CakePHP cache config */
 	protected $defaultCacheName = 'rate_limiter_requests';
+
 	/* @var string|array Callback to get user identifier */
 	protected $userCallback;
+
 	/* @var array Controller actions which do not use rate limiting */
 	protected $allowedActions = array();
+
 	/* @var array Method list for bound controller */
 	protected $_methods = array();
+
 	/* @var CakeRequest Current request */
 	protected $_request;
 
@@ -349,18 +361,3 @@ class RateLimiterComponent extends Component {
 	}
 
 }
-
-class RateLimitExceededException extends Exception {}
-class TotalRateLimitExceededException extends RateLimitExceededException {
-	public $message = 'Exceeded total request limit';
-}
-class MethodRateLimitExceededException extends RateLimitExceededException {
-	/**
-	 * @param string $method name of method that was exceeded
-	 */
-	public function __construct($method) {
-		parent::__construct('Exceeded request limit for method ' . $method);
-	}
-}
-class RateLimitStorageException extends Exception {}
-class RateLimitUserException extends Exception {}

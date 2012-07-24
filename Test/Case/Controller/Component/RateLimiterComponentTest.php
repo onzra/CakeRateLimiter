@@ -333,7 +333,6 @@ class RateLimiterComponentTest extends CakeTestCase {
 		return $this->getUserResult;
 	}
 }
-
 /**
  * Mock controller for testing
  */
@@ -353,25 +352,31 @@ class RateLimiterTestController extends Controller {
 		parent::__construct($request, $response);
 	}
 
-	public function method_a() {}
+	public function method_a() {
+	}
 
-	public function method_b() {}
+	public function method_b() {
+	}
 
-	public function method_c() {}
+	public function method_c() {
+	}
 
-	public function method_d() {}
+	public function method_d() {
+	}
 
-	public function method_e() {}
+	public function method_e() {
+	}
 
 }
-
 /**
  * Mock storage engine for testing
  */
 class RateLimiterTestStorage {
 
 	public static $store = array();
+
 	public static $expirations = array();
+
 	protected static $addedTime = 0;
 
 	public function get($key) {
@@ -382,10 +387,12 @@ class RateLimiterTestStorage {
 		}
 		return false;
 	}
+
 	public function set($key, $value, $expiration) {
 		self::$store[$key] = $value;
 		self::$expirations[$key] = self::getCurrentTime() + $expiration;
 	}
+
 	public function increment($key) {
 		if(isset(self::$expirations[$key]) && self::$expirations[$key] >= self::getCurrentTime()) {
 			if(isset(self::$store[$key])) {
@@ -393,17 +400,22 @@ class RateLimiterTestStorage {
 			}
 		}
 	}
+
 	public static function clear() {
 		self::$store = array();
 		self::resetTime();
 	}
+
 	public static function moveTimeForward($seconds) {
 		self::$addedTime += $seconds;
 	}
+
 	public static function resetTime() {
 		self::$addedTime = 0;
 	}
+
 	protected static function getCurrentTime() {
 		return time() + self::$addedTime;
 	}
+
 }

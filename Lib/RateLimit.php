@@ -13,6 +13,8 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+App::uses('RateLimitConfigurationException', 'RateLimiter.Lib/Error/Exception');
+
 /**
  * RateLimit
  * Specifies a maximum number of requests over a given interval
@@ -21,6 +23,7 @@ class RateLimit {
 
 	/* @var int $limit Maximum number of requests allowed in interval */
 	public $limit;
+
 	/* @var string $interval Time interval to limit over */
 	public $interval;
 
@@ -92,5 +95,3 @@ class RateLimit {
 		}
 	}
 }
-
-class RateLimitConfigurationException extends Exception {}
