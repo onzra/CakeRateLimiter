@@ -2,11 +2,11 @@
 
 <project name="CakeRateLimiter" default="build">
 
-	<target name="build" depends="clean,prepare,phpunit,phpcpd">
+	<target name="build" depends="clean,prepare,phpunit,phpcpd,phpcs-ci">
 		<echo msg="Building CakeRateLimiter!" />
 	</target>
 
-	<target name="phpunit">
+	<target name="phpunit" description="Run unit tests with PHPUnit">
 		<echo msg="/var/lib/cakephp/app/Console/cake test RateLimiter All --stderr --log-junit ${project.basedir}/build/logs/junit.xml --coverage-clover ${project.basedir}/build/logs/clover.xml --coverage-html ${project.basedir}/build/coverage" />
 		<exec executable="/var/lib/cakephp/app/Console/cake">
 			<arg value="test" />
@@ -22,10 +22,28 @@
 		</exec>
 	</target>
 
-	<target name="phpcpd">
+	<target name="phpcpd" description="Find duplicate code using PHPCPD">
 		<exec executable="phpcpd">
 			<arg value="--log-pmd" />
 			<arg value="${project.basedir}/build/logs/pmd-cpd.xml" />
+			<arg path="${project.basedir}/Controller" />
+			<arg path="${project.basedir}/Lib" />
+		</exec>
+	</target>
+
+	<target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+		<exec executable="phpcs">
+			<arg value="--standard=ONZRA" />
+			<arg path="${project.basedir}/Controller" />
+			<arg path="${project.basedir}/Lib" />
+		</exec>
+	</target>
+
+	<target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+		<exec executable="phpcs" output="/dev/null">
+			<arg value="--report=checkstyle" />
+			<arg value="--report-file=${project.basedir}/build/logs/checkstyle.xml" />
+			<arg value="--standard=ONZRA" />
 			<arg path="${project.basedir}/Controller" />
 			<arg path="${project.basedir}/Lib" />
 		</exec>
