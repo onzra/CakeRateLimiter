@@ -2,7 +2,7 @@
 
 <project name="CakeRateLimiter" default="build">
 
-	<target name="build" depends="clean,prepare,phpunit">
+	<target name="build" depends="clean,prepare,phpunit,phpcpd">
 		<echo msg="Building CakeRateLimiter!" />
 	</target>
 
@@ -19,6 +19,15 @@
 			<arg value="${project.basedir}/build/logs/clover.xml" />
 			<!--<arg value="-coverage-html" />-->
 			<!--<arg value="${project.basedir}/build/coverage" />-->
+		</exec>
+	</target>
+
+	<target name="phpcpd">
+		<exec executable="phpcpd">
+			<arg value="--log-pmd" />
+			<arg value="${project.basedir}/build/logs/pmd-cpd.xml" />
+			<arg path="${project.basedir}/Controller" />
+			<arg path="${project.basedir}/Lib" />
 		</exec>
 	</target>
 
